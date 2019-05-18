@@ -2,7 +2,7 @@ Na najbliższe zajęcia proszę uruchmcie aplikację oraz dodajcie walidację ha
 
 ### PS 3
 
-
+#### React developer tools: https://facebook.github.io/react-native/docs/debugging
 1. Dodaj nawigację korzystając z paczki React Navigation https://reactnavigation.org/en/
 2. Dodaj przejście między pierwszym ekranem, a panelem logowania
 3. Przygotuj lokalnie logowanie, tak aby faktycznie sprawdzane było hasło i login
