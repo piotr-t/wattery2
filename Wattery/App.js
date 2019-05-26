@@ -12,6 +12,7 @@ const AppNavigator = createStackNavigator(
   },
   {
     initialRouteName: "Welcome",
+    headerMode: 'none'
   }
 );
 
@@ -29,7 +30,6 @@ export default class App extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'red',
     flex: 1
   },
 });

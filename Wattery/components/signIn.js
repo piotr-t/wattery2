@@ -15,7 +15,7 @@ class SignIn extends Component {
   //   && password === 'qwerty' => this.props.navigate.push('dashboard')
   // }
 
-  mockLogin => () => { console.log('go to dashboard')}
+  mockLogin = () => { console.log('go to dashboard')}
 
   render() {
     return (
