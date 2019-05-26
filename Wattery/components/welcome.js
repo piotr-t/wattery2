@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import BasicButton from './button';
 
 const Welcome  = (props) => {
+  
   return (
     <View>
       <Image 
@@ -15,7 +16,8 @@ const Welcome  = (props) => {
       <Text style={styles.description}>
         Power up your health, by drinking water!
       </Text>
-      <BasicButton title="Next" onPress={props.nextPage}/>
+      <BasicButton title="Next" 
+      onPress={() => props.navigation.push('SignIn')}/>
     </View>
   )
 }

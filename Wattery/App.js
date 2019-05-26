@@ -1,21 +1,27 @@
 import React, {Component} from 'react';
 import {StyleSheet, SafeAreaView} from 'react-native';
+import { createStackNavigator, createAppContainer } from "react-navigation";
 
 import Welcome from './components/welcome';
 import SignIn from './components/signIn'
 
-export default class App extends Component {
-  state = {
-    page: 0
+const AppNavigator = createStackNavigator(
+  {
+    Welcome: Welcome,
+    SignIn: SignIn
+  },
+  {
+    initialRouteName: "Welcome",
   }
+);
 
+const AppContainer = createAppContainer(AppNavigator);
+
+export default class App extends Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        {this.state.page === 0 ? 
-          <Welcome nextPage={() => this.setState({page: 1})} /> : 
-          <SignIn />
-        }
+        <AppContainer/>
       </SafeAreaView>
     );
   }
@@ -23,9 +29,7 @@ export default class App extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF'
+    backgroundColor: 'red',
+    flex: 1
   },
 });

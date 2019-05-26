@@ -10,11 +10,12 @@ class SignIn extends Component {
     canSubmit: false
   }
 
-  /*
-  * Dodaj walidację hasła: musi mieć conajmniej 8 znaków
-  * canSubmit moe przyjąc true dopiero kiedy hasło jest poprawne oraz login nie jest pusty
-  */
+  // mockLogin = () => {
+  //   if login==='mail.@mail.pl' 
+  //   && password === 'qwerty' => this.props.navigate.push('dashboard')
+  // }
 
+  mockLogin => () => { console.log('go to dashboard')}
 
   render() {
     return (
@@ -41,7 +42,7 @@ class SignIn extends Component {
           title="Login" 
           style={styles.loginButton} 
           disabled={!this.state.canSubmit}
-          onPress={() => console.log('Log in')}
+          onPress={this.mockLogin}
         />
       </KeyboardAvoidingView>
     );
