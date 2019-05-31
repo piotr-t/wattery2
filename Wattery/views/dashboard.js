@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 export default class Dashboard extends Component {
   constructor(props) {
@@ -16,13 +17,13 @@ export default class Dashboard extends Component {
       <View style={styles.container}>
         <Text>Your daily water routine</Text>
         <Text style={styles.title}>{percentage}%</Text>
-        <View style={styles.waterContainer}>
+        <LinearGradient colors={['#0B5BD3', '#FFF']} style={styles.waterContainer}>
           <View style={styles.waterPortion}></View>
           <View style={styles.waterPortion}></View>
           <View style={styles.waterPortion}></View>
           <View style={styles.waterPortion}></View>
           <View style={styles.waterPortion}></View>
-        </View>
+        </LinearGradient>
       </View>
     );
   }
