@@ -1,18 +1,38 @@
 import React, {Component} from 'react';
 import {StyleSheet, SafeAreaView} from 'react-native';
-import { createStackNavigator, createAppContainer } from "react-navigation";
+import { createSwitchNavigator, createAppContainer, createBottomTabNavigator, createStackNavigator } from "react-navigation";
 
 import Welcome from './components/welcome';
 import SignIn from './components/signIn'
+import Dashboard from './views/dashboard';
+import Profile from "./views/profile";
+import EditPassword from "./views/editPassword";
 
-const AppNavigator = createStackNavigator(
+const ProfileNavigator = createStackNavigator({
+  Profile: Profile,
+  Edit: EditPassword,
+});
+
+const HomeNavigator = createBottomTabNavigator({
+  Home: Dashboard,
+  Profile: ProfileNavigator,
+});
+
+const AuthNavigator = createStackNavigator({
+  Welcome: Welcome,
+  SignIn: SignIn,
+}, {
+  headerMode: 'none'
+}
+)
+
+const AppNavigator = createSwitchNavigator(
   {
-    Welcome: Welcome,
-    SignIn: SignIn
+    Home: HomeNavigator,
+    Auth: AuthNavigator,
   },
   {
-    initialRouteName: "Welcome",
-    headerMode: 'none'
+    initialRouteName: "Home",
   }
 );
 

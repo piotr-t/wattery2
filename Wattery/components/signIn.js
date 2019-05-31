@@ -15,7 +15,43 @@ class SignIn extends Component {
   //   && password === 'qwerty' => this.props.navigate.push('dashboard')
   // }
 
-  mockLogin = () => { console.log('go to dashboard')}
+  validateForm = () => {
+    if (
+      this.state.login.length !== 0 
+      && this.state.password.length > 0
+      && !this.state.isPasswordInvalid
+    ) {
+      return true
+    } 
+    return false
+  }
+
+  setLogin = (text) => {
+    const canSubmit = text.length > 0 ? this.validateForm() : false;
+    this.setState({login: text, canSubmit}) 
+  }
+
+  setAndValidatePassword = (text) => {
+    let isPasswordInvalid = false;
+    
+    if (text.length < 2) {
+      isPasswordInvalid = true;
+    }
+    const canSubmit = !isPasswordInvalid ? this.validateForm() : false;
+    
+    this.setState({
+      password: text,
+      isPasswordInvalid,
+      canSubmit
+    })
+  }
+
+  mockLogin = () => { 
+    const { login, password } = this.state;
+    if (login === 'kk' && password === 'aaa' ) {
+      this.props.navigation.navigate('Home');
+    }
+  }
 
   render() {
     return (
@@ -25,16 +61,18 @@ class SignIn extends Component {
           style={styles.inputContainer}
           placeholder='Login'
           value={this.state.login}
-          onChangeText={(text) => this.setState({login: text})}
+          onChangeText={this.setLogin}
           returnKeyType='next'
+          autoCapitalize='none'
         />
         <TextInput 
           style={[styles.inputContainer]}
           secureTextEntry
           placeholder='Hasło'
           value={this.state.password}
-          onChangeText={(text) => this.setState({password: text})}
+          onChangeText={this.setAndValidatePassword}
           returnKeyType='done'
+          autoCapitalize='none'
         />
         {this.state.isPasswordInvalid 
           && <Text style={styles.invalidPassword}>Hasło jest za krótkie</Text>}
