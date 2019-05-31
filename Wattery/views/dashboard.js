@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Dialog from "react-native-dialog";
 
@@ -7,8 +7,9 @@ export default class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      percentage: 40,
+      percentage: 0,
       dialogVisible: false,
+      fadeAnim: new Animated.Value(1),
     };
   }
 
@@ -17,8 +18,16 @@ export default class Dashboard extends Component {
   };
 
   handleAddDrink = (type) => {
-     const isUnSafeDrink = type === 'alcohol';
+    const isUnSafeDrink = type === 'alcohol';
     const newPercentageValue = (isUnSafeDrink ? -20 : 20) + +this.state.percentage;
+    
+    Animated.timing(                  
+      this.state.fadeAnim,            
+      {
+        toValue: 0,                   
+        duration: 1000,              
+      }
+    ).start(() => this.setState({ fadeAnim: new Animated.Value(1)}));
 
     this.setState({ 
       percentage: newPercentageValue,
@@ -31,7 +40,7 @@ export default class Dashboard extends Component {
   };
 
   render() {
-    const { percentage } = this.state;
+    const { percentage, fadeAnim } = this.state;
 
     return (
       <View style={styles.container}>
@@ -42,11 +51,11 @@ export default class Dashboard extends Component {
             this.showDialog();
           }}>
           <LinearGradient colors={['#0B5BD3', '#FFF']} style={{flex: 1}}>
-            <View style={[styles.waterPortion, percentage < 100 && styles.emptyPortion]}></View>
-            <View style={[styles.waterPortion, percentage < 80 && styles.emptyPortion]}></View>
-            <View style={[styles.waterPortion, percentage < 60 && styles.emptyPortion]}></View>
-            <View style={[styles.waterPortion, percentage < 40 && styles.emptyPortion]}></View>
-            <View style={[styles.waterPortion, percentage < 20 && styles.emptyPortion]}></View>
+            <Animated.View style={[styles.waterPortion, percentage === 100 && {opacity: fadeAnim}, percentage > 100 && {opacity: 0}]}></Animated.View>
+            <Animated.View style={[styles.waterPortion, percentage === 80 && {opacity: fadeAnim}, percentage > 80 && {opacity: 0}]}></Animated.View>
+            <Animated.View style={[styles.waterPortion, percentage === 60 && {opacity: fadeAnim}, percentage > 60 && {opacity: 0}]}></Animated.View>
+            <Animated.View style={[styles.waterPortion, percentage === 40 && {opacity: fadeAnim}, percentage > 40 && {opacity: 0}]}></Animated.View>
+            <Animated.View style={[styles.waterPortion, percentage === 20 && {opacity: fadeAnim}, percentage > 20 && {opacity: 0}]}></Animated.View>
           </LinearGradient>
         </TouchableOpacity>
         <Dialog.Container visible={this.state.dialogVisible} onBackdropPress={() => this.setState({dialogVisible: false})}>
@@ -87,8 +96,6 @@ const styles = StyleSheet.create({
   waterPortion: {
     borderWidth: 1,
     flex: 1,
+    backgroundColor: 'white',    
   },
-  emptyPortion: {
-    backgroundColor: 'white',
-  }
 })
