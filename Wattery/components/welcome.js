@@ -2,11 +2,11 @@ import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import BasicButton from './button';
 
-const Welcome  = (props) => {
-  
+const Welcome = (props) => {
+
   return (
     <View>
-      <Image 
+      <Image
         style={styles.image}
         resizeMode="contain"
         source={require('../assets/glass.png')} />
@@ -16,8 +16,8 @@ const Welcome  = (props) => {
       <Text style={styles.description}>
         Power up your health, by drinking water!
       </Text>
-      <BasicButton title="Next" 
-      onPress={() => props.navigation.push('SignIn')}/>
+      <BasicButton title="Next"
+        onPress={() => props.navigation.push('SignIn')} />
     </View>
   )
 }

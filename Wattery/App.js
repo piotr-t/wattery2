@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {StyleSheet, SafeAreaView} from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, SafeAreaView } from 'react-native';
 import { createSwitchNavigator, createAppContainer, createBottomTabNavigator, createStackNavigator } from "react-navigation";
 
 import Welcome from './components/welcome';
@@ -7,10 +7,12 @@ import SignIn from './components/signIn'
 import Dashboard from './views/dashboard';
 import Profile from "./views/profile";
 import EditPassword from "./views/editPassword";
+import Loader from './components/loader'
 
 const ProfileNavigator = createStackNavigator({
   Profile: Profile,
   Edit: EditPassword,
+
 });
 
 const HomeNavigator = createBottomTabNavigator({
@@ -21,9 +23,10 @@ const HomeNavigator = createBottomTabNavigator({
 const AuthNavigator = createStackNavigator({
   Welcome: Welcome,
   SignIn: SignIn,
+  Loader: Loader
 }, {
-  headerMode: 'none'
-}
+    headerMode: 'none'
+  }
 )
 
 const AppNavigator = createSwitchNavigator(
@@ -41,9 +44,11 @@ const AppContainer = createAppContainer(AppNavigator);
 export default class App extends Component {
   render() {
     return (
+
       <SafeAreaView style={styles.container}>
-        <AppContainer/>
+        <AppContainer />
       </SafeAreaView>
+
     );
   }
 }

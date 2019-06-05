@@ -1,44 +1,76 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, Platform, AsyncStorage } from 'react-native';
 import BasicButton from './button';
 
 class SignIn extends Component {
-  state = {
-    login: '',
-    password: '',
-    isPasswordInvalid: false,
-    canSubmit: false
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      login: '',
+      password: '',
+      isPasswordInvalid: false,
+      canSubmit: false,
+      newPassword: " "
+    }
   }
 
-  // mockLogin = () => {
-  //   if login==='mail.@mail.pl' 
-  //   && password === 'qwerty' => this.props.navigate.push('dashboard')
-  // }
+
+
+  componentDidMount() {
+
+    mockGetPassword = async () => {
+
+      const { login, password } = this.state;
+
+      try {
+        let userToken = await AsyncStorage.getItem('userToken');
+        userToken = JSON.parse(userToken);
+        if (userToken !== null) {
+          this.setState({ newPassword: userToken.password, login: userToken.login })
+        }
+      } catch (e) { }
+    }
+    mockGetPassword();
+  }
+
+  mockSetLogin = async () => {
+    try {
+      let sendLogin = JSON.stringify({ login: this.state.login })
+      let cos = await AsyncStorage.setItem('userToken', sendLogin);
+    } catch (e) { }
+  }
 
   validateForm = () => {
+    if (this.state.newPassword === undefined) {
+      this.setState({ password: "abc", newPassword: "abc" });
+    }
     if (
-      this.state.login.length !== 0 
+      this.state.login.length !== 0
       && this.state.password.length > 0
       && !this.state.isPasswordInvalid
     ) {
       return true
-    } 
+    }
     return false
   }
 
   setLogin = (text) => {
     const canSubmit = text.length > 0 ? this.validateForm() : false;
-    this.setState({login: text, canSubmit}) 
+    this.setState({ login: text, canSubmit })
   }
+
+
 
   setAndValidatePassword = (text) => {
     let isPasswordInvalid = false;
-    
+
     if (text.length < 2) {
       isPasswordInvalid = true;
     }
+
     const canSubmit = !isPasswordInvalid ? this.validateForm() : false;
-    
+
     this.setState({
       password: text,
       isPasswordInvalid,
@@ -46,18 +78,20 @@ class SignIn extends Component {
     })
   }
 
-  mockLogin = () => { 
-    const { login, password } = this.state;
-    if (login === 'kk' && password === 'aaa' ) {
-      this.props.navigation.navigate('Home');
+  mockLogin = () => {
+    if (this.state.newPassword !== null
+      && this.state.newPassword === this.state.password) {
+
+      this.mockSetLogin();
+      this.props.navigation.navigate('Home')
     }
   }
 
   render() {
     return (
-      <KeyboardAvoidingView style={styles.container}  behavior="padding" enabled={Platform.OS === 'ios'}>
+      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled={Platform.OS === 'ios'}>
         <Text style={styles.title}> Zaloguj się do aplikacji</Text>
-        <TextInput 
+        <TextInput
           style={styles.inputContainer}
           placeholder='Login'
           value={this.state.login}
@@ -65,7 +99,7 @@ class SignIn extends Component {
           returnKeyType='next'
           autoCapitalize='none'
         />
-        <TextInput 
+        <TextInput
           style={[styles.inputContainer]}
           secureTextEntry
           placeholder='Hasło'
@@ -74,11 +108,11 @@ class SignIn extends Component {
           returnKeyType='done'
           autoCapitalize='none'
         />
-        {this.state.isPasswordInvalid 
+        {this.state.isPasswordInvalid
           && <Text style={styles.invalidPassword}>Hasło jest za krótkie</Text>}
-        <BasicButton 
-          title="Login" 
-          style={styles.loginButton} 
+        <BasicButton
+          title="Login"
+          style={styles.loginButton}
           disabled={!this.state.canSubmit}
           onPress={this.mockLogin}
         />
